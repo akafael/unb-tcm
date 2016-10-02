@@ -1,0 +1,103 @@
+% Pacotes e configurações padrão do estilo "article"\
+% -------------------------------------
+\documentclass[a4paper,twocolumn,11pt]{book} 
+% Layout
+% --------------------------------------------------------------------------------
+\input{relat_layout.tex}
+\usepackage{multicol}
+\usepackage[makestderr]{pythontex}
+\restartpythontexsession{\thesection}
+
+\newcommand{\tituloRelatorio}{Transporte de Calor e Massa\\Notas de Aula}
+\title{\tituloRelatorio}
+\hypersetup{pdftitle={\tituloRelatorio}}% title
+
+% Definições Auxiliares
+% -----------------------------------------------------------------
+%\input{relat_aux.tex}
+
+% ----------------------------------~>ø<~---------------------------------------
+\begin{document}
+% Capa e Índice ---------------------------------------------------------------
+\maketitle
+\tableofcontents
+% Conteudo -------------------------------------------------------------------
+\chapter{Termodinâmica} 
+\section{}
+\subsection{Lei dos Gases Ideais}
+\begin{sympycode}
+# Symbolic
+P = Symbol("P")
+V = Symbol("V")
+n = Symbol("n")
+R = Symbol("R")
+T = Symbol("T")
+
+m = Symbol("m")
+M = Symbol("M")
+
+# Numeric
+nR = 8.31
+\end{sympycode}
+
+\begin{equation}
+\sympy{P*V} = \sympy{n*R*T}
+\end{equation}
+
+\begin{table}[H]
+\begin{tabular}{r@{ : }l}
+$P$ & Pressão $[N/m^2]$ \\
+$V$ & Volume $[m^3]$ \\
+$n$ & número de mols \\
+$R$ & Constante Universal dos Gases \\
+$P$ & Temperatura $[K]$ \\
+\end{tabular}
+\end{table}
+
+$R = \sympy{nR} Nm/(mol K)$
+
+\begin{equation}
+\sympy{n} = \sympy{m/M}
+\end{equation}
+
+\begin{table}[H]
+\begin{tabular}{r@{ : }l}
+$m$ & massa $[Kg]$ \\
+$M$ & massa molar $[Kg/mol]$ \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Ex1}
+\subsection{Entalpia}
+\paragraph{Entalpia} : Energia Interna somada à energia de fluxo. 
+
+\begin{sympycode}
+H = Symbol("H")
+Cp = Symbol("C_p")
+Cv = Symbol("C_v")
+C = Symbol("C")
+
+U = Symbol("U")
+\end{sympycode}
+
+\begin{equation}
+\Delta H = \sympy{m*Cp}\Delta T
+\end{equation}
+
+Para sólidos e líquidos:
+
+\paragraph{Gases:}
+$$\sympy{H} = \sympy{U+ P*V}$$
+$$(\sympy{m*Cp*T}) = (\sympy{m*Cv*T}) + (\sympy{n*R*T})$$
+$$\sympy{Cp} = \sympy{Cv+n*R/m}$$
+\begin{equation}
+\sympy{Cp} = \sympy{Cv+R/M}
+\end{equation}
+
+\section{Equações dos mecanismos de transferências de calor}
+\subsection{Condução}
+\begin{equation}
+Q
+\end{equation}
+% ---------------------------------------------------------------------------------------
+\end{document}
