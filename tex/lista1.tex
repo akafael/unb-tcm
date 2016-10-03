@@ -421,10 +421,62 @@ $$
 
 \section{} % q10
 
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+
+# Modelo como resistência térmica
+Rcond = L/(k*A)
+
+# Valores numéricos
+nT0 = 300 # graus C
+nTa = 100 # graus C
+nZ = 8
+
+nL_a = 0.7*12 #
+nA_a = 1 #
+nk_a = 0.1 #
+nRcond_a = Rcond.subs([(L,nL_a),(k,nk_a),(A,nA_a)])
+
+nL_b = 7*12 #
+nA_b = 1 #
+nk_b = 0.02 #
+nRcond_b = Rcond.subs([(L,nL_b),(k,nk_b),(A,nA_b)])
+
+nReq = 2*nRcond_a + nRcond_b
+\end{sympycode}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width = 0.6\linewidth]{./image/lista1/q10}
 \end{figure}
+
+Com base na equação \ref{eq:fourierlaw-cond} e a partir dos valores da condutância, espessura e área podemos calcular a resistência térmica para cada uma das partes do bloco. Desta forma obtemos os valores relacionados na tabela \ref{tab:q10.resistence}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|cccc|c|}
+\hline
+ &  $L \ [in]$ &$A $ & $k \ [Btu/h\cdot in ^\circ F]$ & $R_{cond}$\\
+\hline
+Sheetrock & \npy{L_a} & \npy{A_a} & \npy{k_a} & \npy{Rcond_a} \\
+Fiberglass & \npy{L_b} & \npy{A_b} & \npy{k_b} & \npy{Rcond_b} \\
+\hline
+\end{tabular}
+\caption{Valores calculados para resistência térmica}
+\label{tab:q10.resistence}
+\end{table}
+
+Desta forma podemos avaliar a resistência do bloco como associação das resistências para cada uma das partes conforme a figura \ref{fig:q10.circuit}
 
 \begin{figure}[H]
     \centering
@@ -437,7 +489,11 @@ $$
     \label{fig:q10.circuit}
 \end{figure}
 
+Deste modo, podemos definir a resistência térmica do bloco da parede como:
 
+$$R_{eq} = R_F + R_S + R_F$$
+$$R_{eq} = (\npy{Rcond_a} + \npy{Rcond_b} + \npy{Rcond_a})\ Btu/h ^\circ F$$
+$$R_{eq} = \npy{Req}\ Btu/h ^\circ F$$
 
 \section{} % q11
 
@@ -447,6 +503,77 @@ $$
 \end{figure}
 
 \section{} % q12
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+
+# Modelo como resistência térmica
+Rcond = L/(k*A)
+Rconv = 1/(h*A)
+
+# Valores numéricos
+nT0 = 25 # graus C
+nTa = 0 # graus C
+nh = 18
+
+nL_a = 0.1e-3 #
+nA_a = 1.1 #
+nk_a = 0.060 #
+nRcond_a = Rcond.subs([(L,nL_a),(k,nk_a),(A,nA_a)])
+
+nL_b = 1e-3 #
+nA_b = 1.1 #
+nk_b = 0.026 #
+nRcond_b = Rcond.subs([(L,nL_b),(k,nk_b),(A,nA_b)])
+
+nRconv = Rconv.subs([(A,nA_b),(h,nh)])
+
+nReq1 = 5*nRcond_a + 4*nRcond_b
+nReq = nReq1 + nRconv
+
+nQ = (nT0 -nTa)/nReq;
+\end{sympycode}
+
+Com base na equação \ref{eq:fourierlaw-cond} e a partir dos valores da condutância, espessura e área podemos calcular a resistência térmica para cada uma das partes do bloco. Desta forma obtemos os valores relacionados na tabela \ref{tab:q10.resistence}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|cccc|c|}
+\hline
+ &  $L \ [m]$ &$A\ [m^2]$ & $k \ [W/m ^\circ C]$ & $R_{cond}$\\
+\hline
+Fibra & \npy{L_a} & \npy{A_a} & \npy{k_a} & \npy{Rcond_a} \\
+Camada de Ar & \npy{L_b} & \npy{A_b} & \npy{k_b} & \npy{Rcond_b} \\
+\hline
+\end{tabular}
+\caption{Valores calculados para resistência térmica}
+\label{tab:q10.resistence}
+\end{table}
+
+A resistência de condução será dado por
+
+$$R_{conv} = \sympy{Rconv} = \npy{Rconv}$$
+
+Desta forma podemos avaliar a resistência da jaqueta como associação das resistências térmica da fibra $R_f$ e da camada de ar $R_a$ somado da resitência de convecção:
+
+$$R_{eq} = 5\cdot R_{f} 4\cdot R_{a} + R_{conv}$$
+$$R_{eq} = 5\cdot \npy{Rcond_a} + 4\cdot \npy{Rcond_b} + \npy{Rconv}$$
+$$R_{eq} = \npy{Req}$$
+
+Logo, a partir da resistência térmica, podemos calcular a taxa de transferência de calor $\dot{Q}$, para as temperaturas $T_1 = \npy{T0}^\circ C$ e $T_a = \npy{Ta}^\circ C$ :
+
+$$\dot{Q} = \frac{(T_1 - T_a)}{R_{eq}} = \frac{(\npy{T0} - \npy{Ta})\ ^\circ C}{\npy{Req}\ ^\circ C/W} = \npy{Q}\ W$$
+
+Logo a resposta é \textbf{(c)} $126\ W$
 
 \section{} % q13
 
@@ -455,7 +582,139 @@ $$
 \includegraphics[width = 0.6\linewidth]{./image/lista1/q13}
 \end{figure}
 
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+
+Rc1 = Symbol('R_C1');
+Re1 = Symbol('R_E1');
+
+# Modelo como resistência térmica
+Rcond = L/(k*A)
+
+# Valores numéricos
+ndT = 50 # graus C
+
+# Ao longo do comprimento
+nL_c1 = 10e-3 #
+nA_c1 = 1*2e-6 #
+nk_c = 400 #
+nRcond_c1 = Rcond.subs([(L,nL_c1),(k,nk_c),(A,nA_c1)])
+
+nL_e1 = 10e-3 #
+nA_e1 = 1*2e-6 #
+nk_e = 0.4 #
+nRcond_e1 = Rcond.subs([(L,nL_e1),(k,nk_e),(A,nA_e1)])
+
+Req1 = (Rc1*Re1)/(Rc1+Re1);
+nReq1 = (nRcond_e1*nRcond_c1)/(nRcond_e1+nRcond_c1)
+nQ1 = ndT/nReq1;
+
+# Da esquerda para direita
+nL_c2 = 1e-3 #
+nA_c2 = 10*2e-6 #
+nRcond_c2 = Rcond.subs([(L,nL_c1),(k,nk_c),(A,nA_c1)])
+
+nL_e2 = 1e-3 #
+nA_e2 = 10*2e-6 #
+nRcond_e2 = Rcond.subs([(L,nL_e2),(k,nk_e),(A,nA_e2)])
+
+nReq2 = nRcond_e2 + nRcond_c2
+nQ2 = ndT/nReq2;
+
+# De cima para baixo
+nL_c3 = 2e-3 #
+nA_c3 = 10*1e-6 #
+nRcond_c3 = Rcond.subs([(L,nL_c3),(k,nk_c),(A,nA_c3)])
+
+nL_e3 = 2e-3 #
+nA_e3 = 10*1e-6 #
+nRcond_e3 = Rcond.subs([(L,nL_e3),(k,nk_e),(A,nA_e3)])
+
+nReq3 = nRcond_e3 + nRcond_c3
+nQ3 = ndT/nReq3;
+\end{sympycode}
+
+Com base na equação \ref{eq:fourierlaw-cond} e a partir dos valores da condutância, espessura e área podemos calcular a resistência térmica para cada uma das partes do bloco. Desta forma obtemos os valores relacionados na tabela \ref{tab:q10.resistence}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|cccc|c|}
+\hline
+ &  $L \ [m]$ &$A\ [cm^2]$ & $k \ [W/m ^\circ C]$ & $R_{cond} [^\circ C\ W]$\\
+\hline
+Cobre & \npy{L_c1} & \npy{A_c1*1e6} & \npy{k_c} & \npy{Rcond_c1} \\
+Epoxy & \npy{L_e1} & \npy{A_e1*1e6} & \npy{k_e} & \npy{Rcond_e2} \\
+\hline
+Cobre & \npy{L_c2} & \npy{A_c2*1e6} & \npy{k_c} & \npy{Rcond_c2} \\
+Epoxy & \npy{L_e2} & \npy{A_e2*1e6} & \npy{k_e} & \npy{Rcond_e2} \\
+\hline
+Cobre & \npy{L_c3} & \npy{A_c3*1e6} & \npy{k_c} & \npy{Rcond_c3} \\
+Epoxy & \npy{L_e3} & \npy{A_e3*1e6} & \npy{k_e} & \npy{Rcond_e3} \\
+\hline
+\end{tabular}
+\caption{Valores calculados para resistência térmica em cada sentido}
+\label{tab:q10.resistence}
+\end{table}
+
+\subsection{Taxa de transferência ao longo da barra}
+
+Desta forma podemos avaliar a resistência térmica da barra ao longo de seu comprimento como
+
+$$R_{eq1} = \sympy{Req1}$$
+$$R_{eq1} = \frac{\npy{Rcond_c1}\cdot \npy{Rcond_e1}}{\npy{Rcond_c1}+\npy{Rcond_e1}} $$
+$$R_{eq1} = \npy{Req1}\ ^\circ C\ W$$
+
+E portanto a taxa de transferência de calor será $Q_1 = \Delta T/R_{eq1} = \npy{Q1}\ W$
+
+\subsection{Taxa de transferência de calor da esquerda para direita}
+
+Desta forma podemos avaliar a resistência térmica da barra ao longo de seu comprimento como
+
+$$R_{eq2} = R_{c2} + R_{e2}$$
+$$R_{eq2} = \npy{Rcond_c2} + \npy{Rcond_e2}$$
+$$R_{eq2} = \npy{Req2}\ ^\circ C\ W$$
+
+E portanto a taxa de transferência de calor será $Q_1 = \Delta T/R_{eq2} = \npy{Q2}\ W$
+
+\subsection{Taxa de transferência de calor de cima para baixo}
+
+Desta forma podemos avaliar a resistência térmica da barra ao longo de seu comprimento como
+
+$$R_{eq3} = R_{c3} + R_{e3}$$
+$$R_{eq3} = \npy{Rcond_c3} + \npy{Rcond_e3}$$
+$$R_{eq3} = \npy{Req3}\ ^\circ C\ W$$
+
+E portanto a taxa de transferência de calor será $Q_1 = \Delta T/R_{eq3} = \npy{Q3}\ W$
+
+
 \section{} % q14
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+
+#
+
+\end{sympycode}
+
 
 \section{} % q15
 

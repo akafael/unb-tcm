@@ -25,6 +25,100 @@
 % Conteudo -------------------------------------------------------------------
 \section{} % q1
 \section{} % q2
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Atotal = Symbol('A_total') # Área da base
+Aaleta = Symbol('A_aleta') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+n = Symbol('eta')
+N = Symbol('N')
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+\end{sympycode}
+
+Dado que temos uma aleta para cada região quadrada de $0.6cm^2$, o número total de aletas ao longo da superfície é:
+$$
+N = A_
+$$
 \section{} % q3
+
+\begin{sympycode}
+# Símbolos algébricos
+t = Symbol('t') # Tempo
+T = Symbol('T') # Temperatura
+x = Symbol('x') # distãncia
+L = Symbol('L') # Espessura Placa
+A = Symbol('A') # Área da base
+Atotal = Symbol('A_total') # Área da base
+Aaleta = Symbol('A_aleta') # Área da base
+Q = Symbol('Q') # Calor total
+h = Symbol('h') # coeficiente conveccao
+k = Symbol('k') # Condutividade térmica
+n = Symbol('eta')
+N = Symbol('N')
+T0 = Symbol('T_0') # Temperatura parede interna
+Ta = Symbol('T_amb') # Temperatura ambiente
+
+#
+dQsa = h*Atotal*(T0 - Ta)
+dQa = N*h*Aaleta*n*(T0 - Ta)
+dQna = h*(Atotal-Aaleta)*(T0 - Ta)
+
+dQtotal = (dQna+dQa).simplify()
+etotal = dQsa/dQtotal
+
+nAtotal = 8*6 # cm^2
+nAaleta = 0.2*0.2 # cm^2
+nN = 150
+nn = 0.65
+
+netotal = etotal.subs([(Atotal,nAtotal),(Aaleta,nAaleta),(N,nN),(n,nn)])
+
+\end{sympycode}
+
+\begin{equation}\label{eq:eglobal}
+\epsilon_{global} = \frac{\dot{Q_{sa}}}{\dot{Q_{total}}}
+\end{equation}
+
+Temos que o calor transferido pela superfície $\dot{Q_{sa}}$ sem considerar as aletas é
+
+\begin{equation}\label{eq:dq_sa}
+\dot{Q_{sa}} = \sympy{dQsa}
+\end{equation}
+
+Acrescentando as aletas, temos que o calor transferido pelas aletas $\dot{Q_{a}}$ e o transferido pela superfície restante sem as aletas $\dot{Q_{na}}$ é, respectivamente:
+
+\begin{equation}\label{eq:dq_a}
+\dot{Q_{a}} = \sympy{dQa}
+\end{equation}
+
+\begin{equation}\label{eq:dq_na}
+\dot{Q_{na}} = \sympy{dQna}
+\end{equation}
+
+Dado que $\dot{Q_{total}} = \dot{Q_a} + \dot{Q_{na}}$, substituindo as equações \ref{eq:dq_sa}, \ref{eq:dq_na} e \ref{eq:dq_a} na equação \ref{eq:eglobal}:
+
+$$
+\epsilon_{global} = \sympy{dQsa/(dQna+dQa)}
+$$
+
+Simplificando
+\begin{equation}\label{eq:eglobal2}
+\epsilon_{global} = \sympy{etotal} = \frac{1}{\sympy{Aaleta/Atotal}(\sympy{N*n -1})+1}
+\end{equation}
+
+Subsistituindo os valores de $\sympy{Aaleta} = \npy{Aaleta}$, $\sympy{N} = \npy{N}$ , $\sympy{Atotal} = \npy{Atotal}$ , $\sympy{n} = \npy{n}$:
+
+$$
+\epsilon_{global} = \npy{etotal}
+$$
+
 % ----------------------------------------------------------------------------
 \end{document}
