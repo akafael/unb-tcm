@@ -29,7 +29,9 @@
 # Símbolos algébricos
 t = Symbol('t') # Tempo
 T = Symbol('T') # Temperatura
-x = Symbol('x') # distãncia
+m = Symbol('m') # constante
+Lc = Symbol('L_c')# constante
+D = Symbol('D') # diametro
 L = Symbol('L') # Espessura Placa
 A = Symbol('A') # Área da base
 Atotal = Symbol('A_total') # Área da base
@@ -41,13 +43,57 @@ n = Symbol('eta')
 N = Symbol('N')
 T0 = Symbol('T_0') # Temperatura parede interna
 Ta = Symbol('T_amb') # Temperatura ambiente
+
+
+dQsa = h*Atotal*(T0 - Ta)
+dQa = N*h*Aaleta*n*(T0 - Ta)
+dQna = h*(Atotal-Aaleta)*(T0 - Ta)
+
+sn = tanh(m*Lc)/(m*Lc)
+sm = sqrt(4*h/(k*D))
+sLc = L + D/4
+
+nk = 237
+nh = 35 # W/m^2 C
+nL = 3e-3
+nD = 0.25e-3
+nA = pi*nD*nD/4 + pi*nD*nL
+nLc = nL + nD/4
+
+nm = sqrt(4*nh/(nk*nD))
+nn = tanh(nm*nLc)/(nm*nLc)
 \end{sympycode}
 
-Dado que temos uma aleta para cada região quadrada de $0.6cm^2$, o número total de aletas ao longo da superfície é:
+Dado que temos uma aleta para cada região quadrada de lado $0.6cm$, o número total de aletas ao longo da superfície é:
 $$
-N = A_
+N = \frac{\sympy{Atotal}}{(0.006\cdot 0.006\ m^2))} = \frac{1m\cdot 0.999972m}{(0.006\cdot 0.006\ cm^2)} = 27777
 $$
-\section{} % q3
+
+Sabendo que a área total externa da aleta é $A$, a taxa de transferência de calor para a aleta ideal é $\dot{Q_{sa}}$:
+
+\begin{equation}
+\dot{Q_{sa}} = \sympy{dQsa}
+\end{equation}
+$$
+\dot{Q_{sa}} =
+$$
+
+Para um aleta real , a taxa de transferência de calor da aleta será
+\begin{equation}
+\dot{Q_{a}} = \sympy{dQa}
+\end{equation}
+Aonde a eficiência de uma aleta cilindrica é dada por
+\begin{equation}
+\sympy{n} = \sympy{sn} \ ,\ \sympy{m} = \sympy{sm} \ ,\ \sympy{Lc} = \sympy{sLc}
+\end{equation}
+
+Desta forma temos que $\sympy{Lc} =\npy{Lc}$ , $\sympy{m} =\npy{m}$ e portanto $\sympy{n} =\npy{n}$. Logo a taxa de transferência de calor da aleta real será:
+$$
+\dot{Q_{a}} = 
+$$
+
+% q3 ------------------------------------------------------------------
+\section{}
 
 \begin{sympycode}
 # Símbolos algébricos
