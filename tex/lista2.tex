@@ -473,8 +473,38 @@ A medida da pressão e da temperatura em função do tempo através da sonda mos
 
 % Equação de Navier-Stokes 
 % Mostre que o campo de velocidades é incompreensível
+O escoamento será incompressível pois $\nabla \vec{V} = 0$ pois
+$$\nabla \vec{V} = \frac{\delta \vec{V_x}}{\delta x} + \frac{\delta \vec{V_y}}{\delta y}$$
+$$\nabla \vec{V} = \frac{\delta (U_0+b x))}{\delta x} + \frac{\delta (-b y)}{\delta t}$$
+$\nabla \vec{V} = b - b = 0$
+
+\begin{equation}
+\vec{a} = \frac{d_m \vec{V}}{dt} = \frac{d \vec{V}}{dt} + (\nabla\cdot\vec{V})\cdot\vec{V}
+\end{equation}
+Como $\frac{d \vec{V}}{dt} = 0$ pois não depende do tempo:
+$$
+\vec{a} = (\nabla\cdot\vec{V})\cdot\vec{V}
+$$
+$$
+\vec{a} = b(U_0 + b x) i + b^2
+$$
 
 \section{} % q11
+O escoamento será incompressível pois $\nabla \vec{V} = 0$ pois
+$$\nabla \vec{V} = \frac{\delta \vec{V_x}}{\delta x} + \frac{\delta \vec{V_y}}{\delta y}$$
+$$\nabla \vec{V} = \frac{\delta (1.1+2.8x+0.65y)}{\delta x} + \frac{\delta (0.98 -2.1x - 2.8y)}{\delta t}$$
+$\nabla \vec{V} = 2.8 - 2.8 = 0$
+O campo de aceleração será
+$$
+\vec{a} = (\nabla\cdot\vec{V})\cdot\vec{V}
+$$
+$$
+\vec{a_x(x,y)} = 2.8 (1.1+2.8x+0.65y)
+$$
+$$
+\vec{a_y(x,y)} = -2.8 (0.98 -2.1x - 2.8y)
+$$
+Portanto  $\vec{a}(-2,3) = (-9,2;14.37)$
 \section{} % q12
 \section{} % q13
 \section{} % q14
